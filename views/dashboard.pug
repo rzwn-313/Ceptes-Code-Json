@@ -1,0 +1,34 @@
+extends layout
+
+block content
+ 
+ form(class="message-form")
+  p Select Your Pre-Approved Whatsapp Template Message
+  //- each listOption in listOptions
+  //-  div(class="message-div")
+  //-   input(type="radio", name="template", value=listOption required, id=listOption.id)
+  //-   label(for=listOption.id)= listOption.value
+  //-   br
+  each datas in data
+   div(class="message-div")
+    input(type="radio", name="template", value=datas, id=datas.wabaId)
+    label(for=datas.wabaId)= datas.content
+    br
+  br
+  ul(id="pagin")
+  br
+  br
+  input(type="submit" value="Save")
+
+
+ 
+ div(class="modal-wrapper")
+  div(class="modal")
+   div(class="head")
+     a(class="btn-close trigger" href="javascript:;")
+   div(class="content")
+     h6 Message Template : 
+     p(id="templateDiv")
+     br
+     form(class="modalForm" method="POST" action="/viewMessage")
+      
