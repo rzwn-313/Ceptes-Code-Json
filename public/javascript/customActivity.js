@@ -1,4 +1,8 @@
 'use strict';
+
+if(!(window.self !== window.top) && !(window.self.toString().endsWith('marketingcloudapps.com/') || window.self.toString().endsWith('marketingcloudapps.com'))){
+    document.location.href="/accessDenied";
+   }
 const validateForm = function(cb) {
     
     console.log("formValidation");
@@ -198,6 +202,7 @@ $( document ).ready(function() {
 
     console.log("**",  document.referrer,
      document.location.href)
+   
     $('.message-form').submit(function(){
         // var values = $(this).serialize();
         // console.log(values.deserialize())

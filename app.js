@@ -54,9 +54,10 @@ app.use(bodyParser.raw({
 }));
 
 app.use(express.static(path.join(__dirname, 'public')));
-// const mainDomain = 'jbinteractions.s11.marketingcloudapps.com'; // Replace 'example.com' with your main domain
+// const mainDomain = 'marketingcloudapps.com'; // Replace 'example.com' with your main domain
 // app.use((req, res, next) => {
 //   const { referer } = req.headers;
+//   console.log(referer)
 //   if (referer) {
 //     const refererURL = new URL(referer);
 //     const refererDomain = refererURL.hostname;
@@ -64,13 +65,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 //       // Request comes from the main domain or its subdomains
 //       return next();
 //     }
-//     else{
-//       return res.status(403).send('Access forbidden.');
-//     }
-    
+
+//     return res.status(403).send('Access forbidden.');
 //   }
 //   return res.status(403).send('Access forbidden.');
 // });
+
+// app.get('*', async (req, res, next) => {
+//    console.log("all***")
+//    const { referer } = req.headers;
+//   console.log(referer)
+//   next()
+// });
+
 
 app.post('/login', (req, res) => {
   // retrieveDataFromExtension()
@@ -269,7 +276,7 @@ app.post('/viewMessage', async (req, res) => {
       msgId: 'hola',
       isTemplate: false,
       wabaNumber: '94720290996',
-      to: '916360334746',
+      to: '919578968981',
       type: 'text',
       text: {
         body: newTemp,
@@ -318,6 +325,12 @@ async function retrieveDataFromExtension() {
     throw error;
   }
 }
+
+app.get('/accessDenied', (req,res)=>{
+  res.render('accessDenied', {
+    status: false,
+  });
+})
 // serve config
 app.use('/config.json', routes.config);
 
