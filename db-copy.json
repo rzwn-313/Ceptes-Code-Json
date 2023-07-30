@@ -1,0 +1,10 @@
+{
+    "users": [
+      { "username": "admin2", "password": "admin2", "MID": 514007099 },
+      { "username": "user", "password": "user", "MID": 514007099 },
+      { "username": "admin1", "password": "admin1", "MID": 514007099 },
+      { "username": "admin3", "password": "admin3", "MID": 514007099 },
+      { "username": "admin", "password": "admin@123", "MID": 514007099 }
+    ]
+  }
+  

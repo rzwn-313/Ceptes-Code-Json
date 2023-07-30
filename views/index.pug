@@ -1,7 +1,10 @@
 extends layout
 
 block content
-   h1 ADA LOGIN
+ span(id="loading" class="loader")
+ div(id="loginpage")
+   //-  h1 ADA LOGIN
+   img(src="images/ada.png" class="logo")
    div(class="row")
    div(class="error")
    input(type="hidden" id="users" value=users)

@@ -1,14 +1,13 @@
 const { v1: Uuidv1 } = require('uuid');
+const axios = require('axios');
 const JWT = require('../utils/jwtDecoder');
 const SFClient = require('../utils/sfmc-client');
 const logger = require('../utils/logger');
-const axios = require('axios');
 
 const marketingCloudConfig = {
   clientId: process.env.SFMC_CLIENT_ID,
   clientSecret: process.env.SFMC_CLIENT_SECRET,
   subdomain: process.env.SFMC_SUBDOMAIN,
-  testApiUrl: process.env.TEST_API_URL,
   dataExtensionKey: process.env.DATA_EXTENSION_EXTERNAL_KEY,
 };
 
@@ -23,41 +22,28 @@ exports.execute = async (req, res) => {
   // decode data
   const data = JWT(req.body);
   logger.info(data);
-  const { clientId, clientSecret, subdomain } = marketingCloudConfig;
-  // Get access token
-  const tokenResponse = await axios.post(
-    `https://${subdomain}.auth.marketingcloudapis.com/v2/token`,
-    `grant_type=client_credentials&client_id=${clientId}&client_secret=${clientSecret}`,
-  );
-  const accessToken = tokenResponse.data.access_token;
-  console.log('/accessToken', accessToken);
-  // Retrieve data from the data extension
-  const response = await axios.get(
-    `https://${subdomain}.rest.marketingcloudapis.com/data/v1/customobjectdata/key/${process.env.DATA_EXTENSION_EXTERNAL_KEY}/rowset?$filter=MID eq ${data.inArguments[0].contactKey}`,
-    { headers: { Authorization: `Bearer ${accessToken}` } },
-  );
-  console.log('retrieveDataFromExtension', response.data.items);
-
-  
-
-  try {
-    const id = Uuidv1();
-
-    await SFClient.saveData(process.env.DATA_EXTENSION_EXTERNAL_KEY, [
-      {
-        keys: {
-          Id: id,
-          SubscriberKey: data.inArguments[0].contactKey,
+  const parsedData = JSON.parse(data.inArguments[0]);
+  console.log(parsedData.mergeData.join('~'))
+  await axios.post(
+    'https://indo.staging.bmp.ada-asia.com/v1/messages/sfmc/sendmessage',
+    {
+      channel: 'Whatsapp',
+      payloadVersion: '1.0.0',
+      wabaNumber: parsedData.from,
+      isTemplate: true,
+      namespace: 'ada_otp_12_sl',
+      message: [
+        {
+          to: parsedData.to,
+          templateInfo: parsedData.mergeData.join('~'),
+          msgId: 'uniqdue Id1',
         },
-        values: {
-          Event: data.inArguments[0].DropdownOptions,
-          Text: data.inArguments[0].Text,
-        },
-      },
-    ]);
-  } catch (error) {
-    logger.error(error);
-  }
+      ],
+    },
+    { headers: { Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRJZCI6IkFEQSIsImNvdW50cnlDb2RlIjoiIiwiZW1haWwiOiJtb2hhbW1hZC5hZ3VzdGlhcjJAYWRhLWFzaWEuY29tIiwiZXhwIjoyMzE2ODI1NzQ2LCJpYXQiOjE2ODU2NzM3NDYsIm5hbWUiOiJBZ3VzdGlhciIsInJvbGVDb2RlIjoiT1dORVIiLCJyb2xlSWQiOiJPV05FUiIsInNpZCI6ImFwaWtleSIsInN0eXBlIjoidXNlciIsInVpZCI6IjA4NDJlNGI3LWJlMTctNDBhOS1hZmU3LWIwNGIxNjk3NTAwOCJ9.OMWnFbBpb3s7YdNlsRc6C1s-PQUv99mSXeGNufB-2eY' } },
+  ).then((resp) => {
+    console.log('success');
+  });
 
   res.status(200).send({
     status: 'ok',

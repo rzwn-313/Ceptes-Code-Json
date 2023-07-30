@@ -77,4 +77,8 @@ $(document).ready(function() {
          $(this).addClass("current");
          showPage(parseInt($(this).text()));
     });
+
+    if($('ul#pagin li').length < 4){
+      $('#pagin').hide()
+    }
 });

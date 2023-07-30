@@ -1,24 +1,33 @@
 extends layout
 
 block content
- 
+ div(id="tokenExpiredError")=error 
+ input(type="hidden" name="finalValue" id="finalValue")
  form(class="message-form")
-  p Select Your Pre-Approved Whatsapp Template Message
-  //- each listOption in listOptions
-  //-  div(class="message-div")
-  //-   input(type="radio", name="template", value=listOption required, id=listOption.id)
-  //-   label(for=listOption.id)= listOption.value
-  //-   br
-  each datas in data
-   div(class="message-div")
-    input(type="radio", name="template", value=datas, id=datas.wabaId)
-    label(for=datas.wabaId)= datas.content
+    div(class="expansive-button v1")
+     h3 Enter Mobile Number (with country code)
+      span(style="float:right;margin-right:5px") 
+       i(class="fa fa-angle-up")
+    div(class="expansive number")
+     div(class="inputdiv")
+      label(for="from") From :
+      input(type="text" required name="from" id="from" class="from")
+     div(class="inputdiv")
+      label(for="to") To :
+      input(type="text" required name="to" id="to" class="to")
     br
-  br
-  ul(id="pagin")
-  br
-  br
-  input(type="submit" value="Save")
+    div(class="expansive-button v2")
+     div Choose Message Template
+      span(style="float:right;margin-right:5px") 
+       i(class="fa fa-angle-down")
+    div(class="expansive templates")
+     each datas in data
+       div(class="message-div")
+         input(type="radio", name="template", class="template" required, value=datas, id=datas.wabaId)
+         label(for=datas.wabaId)= datas.content
+     ul(id="pagin")
+    br
+    input(type="submit" value="Next")
 
 
  
@@ -30,5 +39,16 @@ block content
      h6 Message Template : 
      p(id="templateDiv")
      br
-     form(class="modalForm" method="POST" action="/viewMessage")
+     form(class="modalForm")
+
+ div(class="settings-wrapper")
+  div(class="modal")
+   div(class="head")
+     a(class="btn-close trigger-settings" href="javascript:;")
+   div(class="content")
+      input(name="from" type="text" id="from" placeholder="FROM Mobile No.")
+      button(class="done") Done
+
+ div(class="redirect")
+  a(href="/login") Back to Login
       

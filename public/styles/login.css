@@ -21,6 +21,7 @@ h1 {
   margin-top: 5%;
   font-size: 25px;
   font-weight: 600;
+  text-align: center;
 }
 
 
@@ -40,7 +41,7 @@ h1 {
   background: #fff;
   max-width: 600px;
   width: 100%;
-  padding: 10px 44px 30px 44px;
+  padding: 30px;
   border: 1px solid #e1e2f0;
   border-radius: 4px;
   box-shadow: 0 0 5px 0 rgba(42, 45, 48, 0.12);
@@ -158,8 +159,8 @@ button:hover {
 
 #pagin li a{
   border: 1px solid #b0b0b0;
-  padding: 5px 10px;
-  font-size: 14px;
+  padding: 3px 8px;
+  font-size: 12px;
   background-color: #fff;
   color: #000 !important;
   text-decoration: none !important;
@@ -202,7 +203,7 @@ a.btn{
   background:rgba(217,67,86,1);
 }
 
-.modal-wrapper{
+.modal-wrapper, .settings-wrapper{
   width:100%;
   height:100%;
   position:fixed;
@@ -216,7 +217,7 @@ a.btn{
   transition: all 0.25s ease-in-out;
 }
 
-.modal-wrapper.open{
+.modal-wrapper.open, .settings-wrapper.open{
   opacity:1;
   visibility:visible;
 }
@@ -239,7 +240,7 @@ a.btn{
   transition: all 0.5s ease-in-out;
 }
 
-.modal-wrapper.open .modal{
+.modal-wrapper.open .modal, .settings-wrapper.open .modal{
   margin-top:-150px;
   opacity:1;
 }
@@ -321,7 +322,7 @@ p{
 
 
 .modalForm label{
-  width: 10%;
+  width: 10% !important;
 }
 .modalForm input{
   width: 85%;
@@ -331,4 +332,105 @@ p{
 .modalForm .dynamic-next{
   width:100%;
   margin-left: 0%;
+}
+
+.error{
+  text-align: center;
+}
+
+#loginpage{
+  display:none;
+  width:70%;
+}
+
+.loader {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  position: relative;
+  animation: rotate 1s linear infinite;
+  margin-top: 25%;
+}
+.loader::before , .loader::after {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  inset: 0px;
+  border-radius: 50%;
+  border: 5px solid #FFF;
+  animation: prixClipFix 2s linear infinite ;
+}
+.loader::after{
+  border-color: #FF3D00;
+  animation: prixClipFix 2s linear infinite , rotate 0.5s linear infinite reverse;
+  inset: 6px;
+}
+
+@keyframes rotate {
+  0%   {transform: rotate(0deg)}
+  100%   {transform: rotate(360deg)}
+}
+
+@keyframes prixClipFix {
+    0%   {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}
+    25%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}
+    50%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}
+    75%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}
+    100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}
+}
+
+.logo{
+  /* width: 4%;
+  float:right;
+  margin-right: -30px;
+  cursor: pointer; */
+  width: 30%;
+  margin: 0 35%;
+}
+
+
+
+
+/* NEW CSS */
+
+.templates {  
+  display: none;
+ }
+ .number{
+  padding: 10px 10px 100px 10px;
+}
+
+.message-form .number .inputdiv {
+  display: block;
+  width: 100%;
+}
+.message-form .number label {
+  float: left;
+  display: inline-block;
+  width: 15%;
+}
+.message-form .number input {
+  float: left;
+  display: inline-block;
+  width: 85%;
+  height: 35px;
+}
+
+.expansive-button h3, .expansive-button div{
+  font-size: 15px;
+  font-weight: 500;
+}
+.expansive-button{
+  cursor: pointer;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #f0f1fc;
+  border-radius: 10px;
+}
+.expansive-button.open{
+  margin-bottom: 0;
+}
+
+.fa{
+  font-size: 17px;
 }
