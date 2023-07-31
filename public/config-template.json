@@ -13,16 +13,13 @@
   "execute": {
     "inArguments": [
       {
-        "templateId": "{{Contact.Attribute.SheelMay.templateId}}"
+        "name": "{{Contact.Attribute.ADAService.Name}}"
       },
       {
-        "templateContent": "{{Contact.Attribute.SheelMay.templateContent}}"
+        "email": "{{Contact.Attribute.ADAService.Email}}"
       },
       {
-        "mergedValues": "{{Contact.Attribute.SheelMay.mergedValues}}"
-      },
-      {
-        "finalMessage": "{{Contact.Attribute.SheelMay.finalMessage}}"
+        "Mobile": "{{Contact.Default.Mobile}}"
       }
     ],
     "url": "https://$DOMAIN/journey/execute",

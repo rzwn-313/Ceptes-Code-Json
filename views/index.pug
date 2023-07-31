@@ -9,6 +9,14 @@ block content
    div(class="error")
    input(type="hidden" id="users" value=users)
    form(class="js-settings-form")
+    
+        div(id="connect-load")
+         div(v-if="loading" class="spinner")
+          div(class="rect1")
+          div(class="rect2")
+          div(class="rect3")
+          div(class="rect4")
+          div(class="rect5")
         label Username
         br
         input(type="text", name="username", value="", placeholder="Enter Username")
@@ -18,4 +26,4 @@ block content
         input(type="password", name="password", value="", placeholder="Enter Password")
         br
         
-        input(type="submit" value="Connect")   
+        input(type="submit" value="Connect") 

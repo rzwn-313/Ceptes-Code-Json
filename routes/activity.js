@@ -23,7 +23,6 @@ exports.execute = async (req, res) => {
   const data = JWT(req.body);
   logger.info(data);
   const parsedData = JSON.parse(data.inArguments[0]);
-  console.log(parsedData.mergeData.join('~'))
   await axios.post(
     'https://indo.staging.bmp.ada-asia.com/v1/messages/sfmc/sendmessage',
     {
@@ -35,7 +34,7 @@ exports.execute = async (req, res) => {
       message: [
         {
           to: parsedData.to,
-          templateInfo: parsedData.mergeData.join('~'),
+          templateInfo: parsedData.mergeData && parsedData.mergeData.length > 0 ? parsedData.mergeData.join('~') : "",
           msgId: 'uniqdue Id1',
         },
       ],
