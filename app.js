@@ -13,13 +13,7 @@ const cors = require('cors');
 const routes = require('./routes/index');
 const activityRouter = require('./routes/activity');
 
-const marketingCloudConfig = {
-  clientId: process.env.SFMC_CLIENT_ID,
-  clientSecret: process.env.SFMC_CLIENT_SECRET,
-  subdomain: process.env.SFMC_SUBDOMAIN,
-  dataExtensionKey: process.env.DATA_EXTENSION_EXTERNAL_KEY,
-};
-
+console.log('JWT-->',process.env.JWT);
 const app = express();
 app.use(cors());
 app.use((req, res, next) => {
@@ -89,7 +83,8 @@ app.post('/login', async (req, res) => {
           url: '/dashboard',
         });
       }).catch((err) => {
-        res.send({ status: false, redirect: false, message: err.response.data.message });
+        console.log(err)
+        res.send({ status: false, redirect: false, message: err.response && err.response.data && err.response.data.message ? err.response.data.message : 'Please try again' });
       });
   } else if (usernameVerify && usernamePswdVerify) {
     // MID, username and password available in db
@@ -113,7 +108,7 @@ app.post('/login', async (req, res) => {
           url: '/dashboard',
         });
       }).catch((err) => {
-        res.send({ status: false, redirect: false, message: err.response.data.message });
+        res.send({ status: false, redirect: false, message: err.response && err.response.data && err.response.data.message ? err.response.data.message : 'Please try again' });
       });
   } else if (usernameVerify && !usernamePswdVerify) {
     // MID and username available in db and password wrong
@@ -144,7 +139,7 @@ app.post('/login', async (req, res) => {
           url: '/dashboard',
         });
       }).catch((err) => {
-        res.send({ status: false, redirect: false, message: err.response.data.message });
+        res.send({ status: false, redirect: false, message: err.response && err.response.data && err.response.data.message ? err.response.data.message : 'Please try again' });
       });
   }
 });
@@ -164,10 +159,11 @@ app.get('/dashboard', async (req, res) => {
         data: resp.data.templateData,
       });
     }).catch((err) => {
+      console.log("err")
       res.render('dashboard', {
         title: 'Template',
         error: 'Please Login to Continue',
-        data: null,
+        data: [],
       });
     });
 });

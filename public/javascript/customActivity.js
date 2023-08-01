@@ -98,7 +98,7 @@ connection.on("requestedTokens", onGetTokens);
 connection.on("requestedEndpoints", onGetEndpoints);
 
 connection.on("clickedNext", save);
-
+connection.on('requestedInteraction', requestedInteractionHandler);
 const buttonSettings = {
   button: "next",
   text: "done",
@@ -110,7 +110,7 @@ function onRender() {
   connection.trigger("ready");
   connection.trigger("requestTokens");
   connection.trigger("requestEndpoints");
-
+  connection.trigger('requestInteraction');
   // validation
   // validateForm(function($form) {
   //     $form.on('change click keyup input paste', 'input, textarea', function () {
@@ -127,6 +127,7 @@ function onRender() {
 function initialize(data) {
   if (data) {
     payload = data;
+    sessionStorage.setItem("payload", JSON.stringify(data))
   }
   const hasInArguments = Boolean(
     payload["arguments"] &&
@@ -229,26 +230,41 @@ function onGetEndpoints(endpoints) {
  * Save settings
  */
 function save() {
-  console.log("PAYLOAD", JSON.stringify(payload))
-  payload["metaData"].isConfigured = true;
+    payload = JSON.parse(sessionStorage.getItem("payload"));
+    
+    
+    
+    
+    payload["metaData"] = payload["metaData"] || {};
+    payload["metaData"].isConfigured = true;
+  
 
-  payload["arguments"].execute.inArguments = [];
-
-  payload["arguments"].execute.inArguments = [
-    {
-      contactKey: "{{Contact.Key}}",
-    },
-  ];
-
-  payload["arguments"].execute.inArguments.unshift(
-    localStorage.getItem("formValues")
-  );
-  localStorage.removeItem("formValues");
-
-  connection.trigger("updateActivity", payload);
+    payload["arguments"] = payload["arguments"] || {}
+    payload["arguments"]["execute"] = payload["arguments"]["execute"] || {}
+  
+    payload["arguments"].execute.inArguments = [];
+  
+    payload["arguments"].execute.inArguments = [
+      {
+        contactKey: "{{Contact.Key}}"
+      }
+    ];
+  
+    payload["arguments"].execute.inArguments.unshift(
+      localStorage.getItem("formValues")
+    );
+    localStorage.removeItem("formValues");
+    connection.trigger("updateActivity", payload);
+  
+ 
   // }
 }
 
+function requestedInteractionHandler (settings) {
+
+        console.log("SETTINGS",settings.triggers[0].metaData.eventDefinitionKey)
+
+}
 $(document).ready(function () {
   if (
     window.self.location.pathname === "/dashboard" &&

@@ -4,12 +4,6 @@ const JWT = require('../utils/jwtDecoder');
 const SFClient = require('../utils/sfmc-client');
 const logger = require('../utils/logger');
 
-const marketingCloudConfig = {
-  clientId: process.env.SFMC_CLIENT_ID,
-  clientSecret: process.env.SFMC_CLIENT_SECRET,
-  subdomain: process.env.SFMC_SUBDOMAIN,
-  dataExtensionKey: process.env.DATA_EXTENSION_EXTERNAL_KEY,
-};
 
 /**
  * The Journey Builder calls this method for each contact processed by the journey.
