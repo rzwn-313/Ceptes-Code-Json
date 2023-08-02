@@ -1,13 +1,4 @@
 "use strict";
-if (
-  !(window.self !== window.top) &&
-  !(
-    window.self.toString().endsWith("marketingcloudapps.com/") ||
-    window.self.toString().endsWith("marketingcloudapps.com")
-  )
-) {
-  document.location.href = "/accessDenied";
-}
 
 const validateForm = function (cb) {
   // let jwtAccessToken = localStorage.getItem("accessToken");

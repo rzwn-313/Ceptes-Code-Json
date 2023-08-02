@@ -8,7 +8,9 @@ const users = require('../db.json');
  * @param res
  */
 exports.config = (req, res) => {
-  const domain = req.headers.host || req.headers.origin;
+  //const domain = req.headers.host || req.headers.origin;
+  const domain =  'https://indo.staging.bmp.ada-asia.com:8081';
+  console.log('domain',domain);
   const file = path.join(__dirname, '..', 'public', 'config-template.json');
 
   const configTemplate = fs.readFileSync(file, 'utf-8');

@@ -3,6 +3,7 @@
 require('dotenv').config();
 const cookieParser = require('cookie-parser');
 const express = require('express');
+const helmet = require('helmet');
 const fs = require('fs');
 const httpErrors = require('http-errors');
 const logger = require('morgan');
@@ -15,6 +16,19 @@ const activityRouter = require('./routes/activity');
 
 console.log('JWT-->',process.env.JWT);
 const app = express();
+const STACK = process.env.STACK || 's11';
+
+// allow MC instance to whitelist app as iframe in the JB config page
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        'default-src': ["'self'"],
+        'frame-ancestors': ["'self'", `https://mc.${STACK}.exacttarget.com`, `https://jbinteractions.${STACK}.marketingcloudapps.com`],
+      },
+    },
+  }),
+);
 app.use(cors());
 app.use((req, res, next) => {
   // Website you wish to allow to connect
