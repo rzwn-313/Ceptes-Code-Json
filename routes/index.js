@@ -16,6 +16,7 @@ exports.config = (req, res) => {
   const configTemplate = fs.readFileSync(file, 'utf-8');
   const config = JSON.parse(configTemplate.replace(/\$DOMAIN/g, domain));
   res.json(config);
+  console.log('config file',config)
 };
 
 /**
@@ -24,20 +25,10 @@ exports.config = (req, res) => {
  * @param res
  */
 exports.ui = (req, res) => {
-  // console.log("*******",req)
+  console.log('req',req)
   res.render('index', {
     title: 'Login',
     users: JSON.stringify(users),
-    error: '',
-    dropdownOptions: [
-      {
-        name: 'Journey Entry',
-        value: 'journeyEntry',
-      },
-      {
-        name: 'Journey Exit',
-        value: 'journeyExit',
-      },
-    ],
+    error: ''
   });
 };

@@ -1,5 +1,5 @@
 "use strict";
-
+console.log('im here');
 const validateForm = function (cb) {
   // let jwtAccessToken = localStorage.getItem("accessToken");
   // if(jwtAccessToken){
@@ -45,7 +45,8 @@ const validateForm = function (cb) {
     const formValues1 = {
       username: event.target.elements.username.value,
       password: event.target.elements.password.value,
-      MID: JSON.parse(localStorage.getItem("tokens")).MID,
+      // MID: JSON.parse(localStorage.getItem("tokens")).MID,
+      MID: '514007099',
     };
 
     fetch("/login", {
@@ -62,7 +63,7 @@ const validateForm = function (cb) {
 
           window.location.href = `/dashboard?u=${localStorage.getItem(
             "username"
-          )}&&mid=${JSON.parse(localStorage.getItem("tokens")).MID}`;
+          )}&&mid=514007099`;
           // $("#connect-load").css("display", "none")
         } else if (response.redirect === false) {
           $("#connect-load").css("display", "none");
@@ -83,7 +84,7 @@ let formValues = {};
 // let modalFormValues = {};
 let $form;
 $(window).ready(onRender);
-
+console.log('Connection Is initActivity');
 connection.on("initActivity", initialize);
 connection.on("requestedTokens", onGetTokens);
 connection.on("requestedEndpoints", onGetEndpoints);
@@ -99,6 +100,7 @@ const buttonSettings = {
 
 function onRender() {
   connection.trigger("ready");
+  console.log('Connection Is onRender');
   connection.trigger("requestTokens");
   connection.trigger("requestEndpoints");
   connection.trigger('requestInteraction');
@@ -188,7 +190,7 @@ function onGetTokens(tokens) {
     ) {
       document.location.href = `/dashboard?u=${localStorage.getItem(
         "username"
-      )}&&mid=${JSON.parse(localStorage.getItem("tokens")).MID}`;
+      )}&&mid=514007099`;
     } else {
       $("#loading").css("display", "none");
       $("#loginpage").css("display", "block");
@@ -257,6 +259,8 @@ function requestedInteractionHandler (settings) {
 
 }
 $(document).ready(function () {
+  $("#loading").css("display", "none");
+$("#loginpage").css("display", "block");
   if (
     window.self.location.pathname === "/dashboard" &&
     document.getElementById("tokenExpiredError").innerHTML
@@ -302,9 +306,7 @@ $(document).ready(function () {
     }
 
     jQuery(".modalForm").append(
-      `<input class="dynamic-mid" name="mid" type="hidden" value=${
-        JSON.parse(localStorage.getItem("tokens")).MID
-      }>`
+      `<input class="dynamic-mid" name="mid" type="hidden" value='514007099'>`
     );
     jQuery(".modalForm").append(
       `<input class="dynamic-mid" name="from" type="hidden" value=${formData.from}>`
@@ -347,7 +349,7 @@ $(document).ready(function () {
       namespace: event.target.elements.namespace.value,
       to: event.target.elements.to.value,
       from: event.target.elements.from.value,
-      MID: JSON.parse(localStorage.getItem("tokens")).MID,
+      MID: '514007099',
       mergeData: mergeData,
       // finalMessage: newTemp
     };

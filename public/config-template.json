@@ -6,20 +6,14 @@
   "type": "REST",
   "lang": {
     "en-US": {
-      "description": "Custom Activity"
+      "description": "Custom Activity For ADA"
     }
   },
   "arguments": {
   "execute": {
     "inArguments": [
       {
-        "name": "{{Contact.Attribute.ADAService.Name}}"
-      },
-      {
-        "email": "{{Contact.Attribute.ADAService.Email}}"
-      },
-      {
-        "Mobile": "{{Contact.Default.Mobile}}"
+        "myInArgument": "inArgument coming from iframe"
       }
     ],
     "url": "https://$DOMAIN/journey/execute",
@@ -27,30 +21,26 @@
     "body": "",
     "header": "",
     "format": "json",
-    "useJwt": true,
-    "timeout": 10000
+    "retryCount": 1,
+    "timeout": 100000
   }
 },
   "configurationArguments": {
     "save": {
       "url": "https://$DOMAIN/journey/save",
-      "verb": "POST",
-      "useJwt": true
+      "verb": "POST"
     },
     "publish": {
       "url": "https://$DOMAIN/journey/publish",
-      "verb": "POST",
-      "useJwt": true
+      "verb": "POST"
     },
     "stop": {
       "url": "https://$DOMAIN/journey/stop",
-      "verb": "POST",
-      "useJwt": true
+      "verb": "POST"
     },
     "validate": {
       "url": "https://$DOMAIN/journey/validate",
-      "verb": "POST",
-      "useJwt": true
+      "verb": "POST"
     }
   },
   "userInterfaces": {
