@@ -45,8 +45,11 @@ app.use((req, res, next) => {
   // to the API (e.g. in case you use sessions)
   res.setHeader('Access-Control-Allow-Credentials', true);
 
+  // Set the Content-Security-Policy header to allow framing from the same origin and example.com
+  // res.setHeader('Content-Security-Policy', "frame-ancestors 'self' https://jbinteractions.marketingcloudapps.com https://mc.s11.exacttarget.com");
+  res.setHeader('Content-Security-Policy', 'frame-ancestors *');
   // Set the X-Frame-Options header
-  res.setHeader('X-Frame-Options', 'ALLOWALL');
+  // res.setHeader('X-Frame-Options', 'ALLOWALL');
 
   // Pass to next layer of middleware
   next();
