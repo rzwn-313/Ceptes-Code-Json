@@ -23,12 +23,13 @@ app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
-        'default-src': ["'self'"],
-        'frame-ancestors': ["'self'", `https://mc.${STACK}.exacttarget.com`, `https://jbinteractions.${STACK}.marketingcloudapps.com`],
+        'default-src': ["'self'", '*'], // Allow all sources for default content
+        'frame-ancestors': ["'self'", `https://mc.${STACK}.exacttarget.com`, `https://jbinteractions.${STACK}.marketingcloudapps.com`, '*'], // Allow all sources for frame ancestors
       },
     },
   }),
 );
+
 app.use(cors());
 app.use((req, res, next) => {
   // Website you wish to allow to connect
@@ -43,6 +44,9 @@ app.use((req, res, next) => {
   // Set to true if you need the website to include cookies in the requests sent
   // to the API (e.g. in case you use sessions)
   res.setHeader('Access-Control-Allow-Credentials', true);
+
+  // Set the X-Frame-Options header
+  res.setHeader('X-Frame-Options', 'ALLOWALL');
 
   // Pass to next layer of middleware
   next();
