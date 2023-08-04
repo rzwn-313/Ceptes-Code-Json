@@ -25,7 +25,7 @@ exports.config = (req, res) => {
  * @param res
  */
 exports.ui = (req, res) => {
-  console.log('req',req)
+  // console.log('req',req)
   res.render('index', {
     title: 'Login',
     users: JSON.stringify(users),
