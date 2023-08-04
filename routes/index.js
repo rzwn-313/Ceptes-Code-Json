@@ -9,7 +9,7 @@ const users = require('../db.json');
  */
 exports.config = (req, res) => {
   //const domain = req.headers.host || req.headers.origin;
-  const domain =  'https://indo.staging.bmp.ada-asia.com:8081';
+  const domain =  'indo.staging.bmp.ada-asia.com:8081';
   console.log('domain',domain);
   const file = path.join(__dirname, '..', 'public', 'config-template.json');
 
