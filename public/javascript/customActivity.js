@@ -1,37 +1,15 @@
 "use strict";
-console.log('im here');
+if (
+  !(window.self !== window.top) &&
+  !(
+    window.self.toString().endsWith("marketingcloudapps.com/") ||
+    window.self.toString().endsWith("marketingcloudapps.com")
+  )
+) {
+  document.location.href = "/accessDenied";
+}
+
 const validateForm = function (cb) {
-  // let jwtAccessToken = localStorage.getItem("accessToken");
-  // if(jwtAccessToken){
-  // const decodedToken = parseJwt(jwtAccessToken);
-
-  // var isExpiredToken = false;
-
-  // var dateNow = new Date();
-
-  // if(decodedToken.exp < dateNow.getTime()/1000)
-
-  // {
-  //        localStorage.removeItem("accessToken")
-  //        isExpiredToken = true;
-  // }
-
-  // if(!isExpiredToken){
-  //     $("#loading").css("display", "none");
-  //     $("#loginpage").css("display", "none");
-  //     window.location.href="/dashboard";
-  //     // return false;
-  // }
-  // else{
-  //     // window.location.href="/";
-  //     $("#loading").css("display", "none");
-  //     $("#loginpage").css("display", "block");
-  // }}
-  // else{
-  //     // window.location.href="/";
-  //     $("#loading").css("display", "none");
-  //     $("#loginpage").css("display", "block");
-  // }
 
   $form = $(".js-settings-form");
 
@@ -45,8 +23,7 @@ const validateForm = function (cb) {
     const formValues1 = {
       username: event.target.elements.username.value,
       password: event.target.elements.password.value,
-      // MID: JSON.parse(localStorage.getItem("tokens")).MID,
-      MID: '514007099',
+      MID: JSON.parse(localStorage.getItem("tokens")).MID,
     };
 
     fetch("/login", {
@@ -63,7 +40,7 @@ const validateForm = function (cb) {
 
           window.location.href = `/dashboard?u=${localStorage.getItem(
             "username"
-          )}&&mid=514007099`;
+          )}&&mid=${JSON.parse(localStorage.getItem("tokens")).MID}`;
           // $("#connect-load").css("display", "none")
         } else if (response.redirect === false) {
           $("#connect-load").css("display", "none");
@@ -84,7 +61,7 @@ let formValues = {};
 // let modalFormValues = {};
 let $form;
 $(window).ready(onRender);
-console.log('Connection Is initActivity');
+
 connection.on("initActivity", initialize);
 connection.on("requestedTokens", onGetTokens);
 connection.on("requestedEndpoints", onGetEndpoints);
@@ -100,17 +77,10 @@ const buttonSettings = {
 
 function onRender() {
   connection.trigger("ready");
-  console.log('Connection Is onRender');
   connection.trigger("requestTokens");
   connection.trigger("requestEndpoints");
   connection.trigger('requestInteraction');
-  // validation
-  // validateForm(function($form) {
-  //     $form.on('change click keyup input paste', 'input, textarea', function () {
-  //         buttonSettings.enabled = $form.valid();
-  //         connection.trigger('updateButton', buttonSettings);
-  //     });
-  // });
+  
 }
 
 /**
@@ -150,21 +120,6 @@ function initialize(data) {
   });
 }
 
-function parseJwt(token) {
-  var base64Url = token.split(".")[1];
-  var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-  var jsonPayload = decodeURIComponent(
-    window
-      .atob(base64)
-      .split("")
-      .map(function (c) {
-        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-      })
-      .join("")
-  );
-
-  return JSON.parse(jsonPayload);
-}
 
 /**
  *
@@ -174,9 +129,6 @@ function parseJwt(token) {
 function onGetTokens(tokens) {
   localStorage.setItem("tokens", JSON.stringify(tokens));
   authTokens = tokens;
-
-  //     $("#loading").css("display", "none");
-  // $("#loginpage").css("display", "block");
 
   let userData = document.getElementById("users");
 
@@ -190,24 +142,13 @@ function onGetTokens(tokens) {
     ) {
       document.location.href = `/dashboard?u=${localStorage.getItem(
         "username"
-      )}&&mid=514007099`;
+      )}&&mid=${JSON.parse(localStorage.getItem("tokens")).MID}`;
     } else {
       $("#loading").css("display", "none");
       $("#loginpage").css("display", "block");
     }
   }
-  //     if(userData){
-  //         let users = JSON.parse(userData.value).users;
-  //         console.log("users", users)
-  //         if(users.filter(x=> x.MID === JSON.parse(localStorage.getItem('tokens')).MID && x.username === localStorage.getItem("username")).length > 0){
-  //            console.log("yes")
-  //            document.location.href=`/dashboard?accessToken=${localStorage.getItem('accessToken')}`;
-  //         }
-  //         else{
-  //            $("#loading").css("display", "none");
-  // $("#loginpage").css("display", "block");
-  //         }
-  //     }
+
 }
 
 /**
@@ -259,8 +200,6 @@ function requestedInteractionHandler (settings) {
 
 }
 $(document).ready(function () {
-  $("#loading").css("display", "none");
-$("#loginpage").css("display", "block");
   if (
     window.self.location.pathname === "/dashboard" &&
     document.getElementById("tokenExpiredError").innerHTML
@@ -306,7 +245,9 @@ $("#loginpage").css("display", "block");
     }
 
     jQuery(".modalForm").append(
-      `<input class="dynamic-mid" name="mid" type="hidden" value='514007099'>`
+      `<input class="dynamic-mid" name="mid" type="hidden" value=${
+        JSON.parse(localStorage.getItem("tokens")).MID
+      }>`
     );
     jQuery(".modalForm").append(
       `<input class="dynamic-mid" name="from" type="hidden" value=${formData.from}>`
@@ -349,7 +290,8 @@ $("#loginpage").css("display", "block");
       namespace: event.target.elements.namespace.value,
       to: event.target.elements.to.value,
       from: event.target.elements.from.value,
-      MID: '514007099',
+      MID: JSON.parse(localStorage.getItem("tokens")).MID,
+      username: localStorage.getItem("username"),
       mergeData: mergeData,
       // finalMessage: newTemp
     };
@@ -376,9 +318,13 @@ $("#loginpage").css("display", "block");
     .unbind("click")
     .click(function () {
       $(this).toggleClass("open");
-      $(".templates").attr("style", "display:none");
+
+      $(".templates").attr("style", "display:none;");
+      $(".templates").css("display", "none");
+
       $(".v2>div>span>i").addClass("fa-angle-down");
       $(".v2>div>span>i").removeClass("fa-angle-up");
+
       $("i", this).toggleClass("fa-angle-down fa-angle-up");
       $(this).next().stop().animate(
         {
@@ -392,9 +338,12 @@ $("#loginpage").css("display", "block");
     .unbind("click")
     .click(function () {
       $(this).toggleClass("close");
-      $(".number").attr("style", "display:none");
+
+      $(".number").attr("style", "display:none;");
+      $(".number").css("display", "none");
       $(".v1>h3>span>i").addClass("fa-angle-down");
       $(".v1>h3>span>i").removeClass("fa-angle-up");
+
       $("i", this).toggleClass("fa-angle-up fa-angle-down");
       $(this).parent().next().stop().animate(
         {

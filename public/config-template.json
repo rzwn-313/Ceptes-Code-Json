@@ -22,25 +22,30 @@
     "header": "",
     "format": "json",
     "retryCount": 1,
+    "useJwt": true,
     "timeout": 100000
   }
 },
   "configurationArguments": {
     "save": {
       "url": "https://$DOMAIN/journey/save",
-      "verb": "POST"
+      "verb": "POST",
+      "useJwt": true
     },
     "publish": {
       "url": "https://$DOMAIN/journey/publish",
-      "verb": "POST"
+      "verb": "POST",
+      "useJwt": true
     },
     "stop": {
       "url": "https://$DOMAIN/journey/stop",
-      "verb": "POST"
+      "verb": "POST",
+      "useJwt": true
     },
     "validate": {
       "url": "https://$DOMAIN/journey/validate",
-      "verb": "POST"
+      "verb": "POST",
+      "useJwt": true
     }
   },
   "userInterfaces": {

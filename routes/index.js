@@ -8,15 +8,13 @@ const users = require('../db.json');
  * @param res
  */
 exports.config = (req, res) => {
-  //const domain = req.headers.host || req.headers.origin;
-  const domain =  'indo.staging.bmp.ada-asia.com:8081';
-  console.log('domain',domain);
+  const domain = req.headers.host || req.headers.origin;
   const file = path.join(__dirname, '..', 'public', 'config-template.json');
 
   const configTemplate = fs.readFileSync(file, 'utf-8');
   const config = JSON.parse(configTemplate.replace(/\$DOMAIN/g, domain));
   res.json(config);
-  console.log('config file',config)
+  // console.log('config',config);
 };
 
 /**
@@ -25,10 +23,10 @@ exports.config = (req, res) => {
  * @param res
  */
 exports.ui = (req, res) => {
-  // console.log('req',req)
+  // console.log("*******",req)
   res.render('index', {
     title: 'Login',
     users: JSON.stringify(users),
-    error: ''
+    error: '',
   });
 };

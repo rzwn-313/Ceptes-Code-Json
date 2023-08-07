@@ -10,11 +10,9 @@ const logger = require('morgan');
 const path = require('path');
 const bodyParser = require('body-parser');
 const axios = require('axios');
-const cors = require('cors');
 const routes = require('./routes/index');
 const activityRouter = require('./routes/activity');
 
-console.log('JWT-->',process.env.JWT);
 const app = express();
 const STACK = process.env.STACK || 's11';
 
@@ -29,31 +27,6 @@ app.use(
     },
   }),
 );
-
-// app.use(cors());
-// app.use((req, res, next) => {
-//   // Website you wish to allow to connect
-//   res.setHeader('Access-Control-Allow-Origin', '*');
-
-//   // Request methods you wish to allow
-//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
-//   // Request headers you wish to allow
-//   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-
-//   // Set to true if you need the website to include cookies in the requests sent
-//   // to the API (e.g. in case you use sessions)
-//   res.setHeader('Access-Control-Allow-Credentials', true);
-
-//   // Set the Content-Security-Policy header to allow framing from the same origin and example.com
-//   // res.setHeader('Content-Security-Policy', "frame-ancestors 'self' https://jbinteractions.marketingcloudapps.com https://mc.s11.exacttarget.com");
-//   res.setHeader('Content-Security-Policy', 'frame-ancestors *');
-//   // Set the X-Frame-Options header
-//   // res.setHeader('X-Frame-Options', 'ALLOWALL');
-
-//   // Pass to next layer of middleware
-//   next();
-// });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

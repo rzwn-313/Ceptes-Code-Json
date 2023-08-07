@@ -3,7 +3,7 @@ const axios = require('axios');
 const JWT = require('../utils/jwtDecoder');
 const SFClient = require('../utils/sfmc-client');
 const logger = require('../utils/logger');
-
+const users = require('../db.json');
 
 /**
  * The Journey Builder calls this method for each contact processed by the journey.
@@ -17,6 +17,8 @@ exports.execute = async (req, res) => {
   const data = JWT(req.body);
   logger.info(data);
   const parsedData = JSON.parse(data.inArguments[0]);
+  let dbArr = users[parsedData.MID];
+  let dbObj = dbArr.find(x => x.username === parsedData.username);
   await axios.post(
     'https://indo.staging.bmp.ada-asia.com/v1/messages/sfmc/sendmessage',
     {
@@ -33,7 +35,7 @@ exports.execute = async (req, res) => {
         },
       ],
     },
-    { headers: { Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRJZCI6IkFEQSIsImNvdW50cnlDb2RlIjoiIiwiZW1haWwiOiJtb2hhbW1hZC5hZ3VzdGlhcjJAYWRhLWFzaWEuY29tIiwiZXhwIjoyMzE2ODI1NzQ2LCJpYXQiOjE2ODU2NzM3NDYsIm5hbWUiOiJBZ3VzdGlhciIsInJvbGVDb2RlIjoiT1dORVIiLCJyb2xlSWQiOiJPV05FUiIsInNpZCI6ImFwaWtleSIsInN0eXBlIjoidXNlciIsInVpZCI6IjA4NDJlNGI3LWJlMTctNDBhOS1hZmU3LWIwNGIxNjk3NTAwOCJ9.OMWnFbBpb3s7YdNlsRc6C1s-PQUv99mSXeGNufB-2eY' } },
+    { headers: { Authorization: `Bearer ${dbObj.accessToken}` } },
   ).then((resp) => {
     console.log('success');
   });
