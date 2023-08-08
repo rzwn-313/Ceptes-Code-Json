@@ -1,12 +1,13 @@
 {
   "workflowApiVersion": "1.1",
   "metaData": {
-    "icon": "images/ada-logo.jpeg"
+    "icon": "images/adaLogo.png"
   },
   "type": "REST",
   "lang": {
     "en-US": {
-      "description": "Custom Activity For ADA"
+      "name": "ADAMC (ADA Marketing Cloud).",
+      "description": "Custom Activity For ADA For Sending Whatsapp Messages"
     }
   },
   "arguments": {
