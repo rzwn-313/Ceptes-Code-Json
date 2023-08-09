@@ -6,7 +6,6 @@
   "type": "REST",
   "lang": {
     "en-US": {
-      "name": "ADAMC (ADA Marketing Cloud).",
       "description": "Custom Activity For ADA For Sending Whatsapp Messages"
     }
   },
@@ -23,30 +22,25 @@
     "header": "",
     "format": "json",
     "retryCount": 1,
-    "useJwt": true,
     "timeout": 100000
   }
 },
   "configurationArguments": {
     "save": {
       "url": "https://$DOMAIN/journey/save",
-      "verb": "POST",
-      "useJwt": true
+      "verb": "POST"
     },
     "publish": {
       "url": "https://$DOMAIN/journey/publish",
-      "verb": "POST",
-      "useJwt": true
+      "verb": "POST"
     },
     "stop": {
       "url": "https://$DOMAIN/journey/stop",
-      "verb": "POST",
-      "useJwt": true
+      "verb": "POST"
     },
     "validate": {
       "url": "https://$DOMAIN/journey/validate",
-      "verb": "POST",
-      "useJwt": true
+      "verb": "POST"
     }
   },
   "userInterfaces": {

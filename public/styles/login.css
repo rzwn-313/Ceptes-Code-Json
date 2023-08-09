@@ -511,3 +511,25 @@ p{
   }
 }
 
+#reset{
+  text-align: right;
+  margin-bottom: 5px;
+}
+
+#reset span{
+  font-size: 15px;
+  color: #000;
+  border: 0;
+  border-radius: 3px;
+  background-color: #f0f1fc;
+  padding: 5px 15px;
+  font-family: 'Open Sans', sans-serif;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#fromvalidationerror{
+  text-align: center;
+  margin-bottom: 5px;
+  color: #c20000;
+}

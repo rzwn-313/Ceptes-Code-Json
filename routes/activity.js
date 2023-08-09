@@ -1,6 +1,6 @@
 const { v1: Uuidv1 } = require('uuid');
 const axios = require('axios');
-const JWT = require('../utils/jwtDecoder');
+
 const SFClient = require('../utils/sfmc-client');
 const logger = require('../utils/logger');
 const users = require('../db.json');
@@ -14,19 +14,19 @@ const users = require('../db.json');
 exports.execute = async (req, res) => {
   console.log('EXECUTE', req.body);
   // decode data
-  const data = JWT(req.body);
+  const data = req.body;
   logger.info(data);
   const parsedData = JSON.parse(data.inArguments[0]);
   let dbArr = users[parsedData.MID];
   let dbObj = dbArr.find(x => x.username === parsedData.username);
   await axios.post(
-    'https://indo.staging.bmp.ada-asia.com/v1/messages/sfmc/sendmessage',
+    process.env.SENDMESSAGEAPI,
     {
       channel: 'Whatsapp',
       payloadVersion: '1.0.0',
       wabaNumber: parsedData.from,
       isTemplate: true,
-      namespace: 'ada_otp_12_sl',
+      namespace: parsedData.namespace,
       message: [
         {
           to: parsedData.to,

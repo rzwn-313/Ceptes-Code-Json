@@ -38,9 +38,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(
-  bodyParser.raw({
-    type: 'application/jwt',
-  }),
+  bodyParser.raw()
 );
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -55,7 +53,7 @@ app.post('/login', async (req, res) => {
   if (JSON.parse(data)[req.body.MID] == undefined) {
     // MID not available in db
 
-    await axios.post('https://indo.staging.bmp.ada-asia.com/v1/sfmc/token/generate', data1, { headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } })
+    await axios.post(process.env.TOKENGENERATEAPI, data1, { headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } })
       .then((resp) => {
         const pushData1 = {
           username: req.body.username,
@@ -82,8 +80,7 @@ app.post('/login', async (req, res) => {
       });
   } else if (usernameVerify && usernamePswdVerify) {
     // MID, username and password available in db
-    console.log('elseif1');
-    await axios.post('https://indo.staging.bmp.ada-asia.com/v1/sfmc/token/generate', data1, { headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } })
+    await axios.post(process.env.TOKENGENERATEAPI, data1, { headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } })
       .then((resp) => {
         const parseData = JSON.parse(data);
         const midArray = parseData[req.body.MID];
@@ -109,7 +106,7 @@ app.post('/login', async (req, res) => {
     res.send({ status: false, redirect: false, message: 'Incorrect Username/Password' });
   } else {
     // MID available in db but username and password not registered
-    await axios.post('https://indo.staging.bmp.ada-asia.com/v1/sfmc/token/generate', data1, { headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } })
+    await axios.post(process.env.TOKENGENERATEAPI, data1, { headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } })
       .then((resp) => {
         const pushData2 = {
           username: req.body.username,
@@ -145,7 +142,7 @@ app.get('/dashboard', async (req, res) => {
   const dbDataArray = JSON.parse(data)[urlData.mid];
   const dbObj = dbDataArray.find((x) => x.username === urlData.u);
 
-  await axios.get('https://indo.staging.bmp.ada-asia.com/v1/sfmc/list/template', { headers: { Authorization: `Bearer ${dbObj.accessToken}` } })
+  await axios.get(process.env.TEMPLATEAPI, { headers: { Authorization: `Bearer ${dbObj.accessToken}` } })
     .then((resp) => {
       res.render('dashboard', {
         title: 'Template',

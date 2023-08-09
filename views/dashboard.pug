@@ -4,6 +4,10 @@ block content
  div(id="tokenExpiredError")=error 
  input(type="hidden" name="finalValue" id="finalValue")
  form(class="message-form")
+    div(id="reset", title="Reset Login")
+        span.icon-container(style="background-color: #ffcc00; padding: 5px; border-radius: 50%;")
+         i.fas.fa-redo-alt(style="font-size: 24px; color: white;")
+    div(id="fromvalidationerror")
     div(class="expansive-button v1")
      h3 Enter Mobile Number (with country code)
       span(style="float:right;margin-right:5px") 
@@ -11,10 +15,10 @@ block content
     div(class="expansive number")
      div(class="inputdiv")
       label(for="from") From :
-      input(type="text" required name="from" id="from" class="from")
+      input(type="text"   name="from" id="from" class="from")
      div(class="inputdiv")
       label(for="to") To :
-      input(type="text" required name="to" id="to" class="to")
+      input(type="text"  name="to" id="to" class="to")
     br
     div(class="expansive-button v2")
      div Choose Message Template
@@ -23,7 +27,7 @@ block content
     div(class="expansive templates")
      each datas in data
        div(class="message-div")
-         input(type="radio", name="template", class="template" required, value=datas, id=datas.wabaId)
+         input(type="radio", name="template", class="template"  value=datas, id=datas.wabaId)
          label(for=datas.wabaId)= datas.content
      ul(id="pagin")
     br

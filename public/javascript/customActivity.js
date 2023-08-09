@@ -10,7 +10,6 @@ if (
 }
 
 const validateForm = function (cb) {
-
   $form = $(".js-settings-form");
 
   $form.validate({
@@ -67,7 +66,7 @@ connection.on("requestedTokens", onGetTokens);
 connection.on("requestedEndpoints", onGetEndpoints);
 
 connection.on("clickedNext", save);
-connection.on('requestedInteraction', requestedInteractionHandler);
+connection.on("requestedInteraction", requestedInteractionHandler);
 const buttonSettings = {
   button: "next",
   text: "done",
@@ -79,8 +78,7 @@ function onRender() {
   connection.trigger("ready");
   connection.trigger("requestTokens");
   connection.trigger("requestEndpoints");
-  connection.trigger('requestInteraction');
-  
+  connection.trigger("requestInteraction");
 }
 
 /**
@@ -90,7 +88,7 @@ function onRender() {
 function initialize(data) {
   if (data) {
     payload = data;
-    sessionStorage.setItem("payload", JSON.stringify(data))
+    sessionStorage.setItem("payload", JSON.stringify(data));
   }
   const hasInArguments = Boolean(
     payload["arguments"] &&
@@ -120,7 +118,6 @@ function initialize(data) {
   });
 }
 
-
 /**
  *
  *
@@ -148,7 +145,6 @@ function onGetTokens(tokens) {
       $("#loginpage").css("display", "block");
     }
   }
-
 }
 
 /**
@@ -164,40 +160,33 @@ function onGetEndpoints(endpoints) {
  * Save settings
  */
 function save() {
-    payload = JSON.parse(sessionStorage.getItem("payload"));
-    
-    
-    
-    
-    payload["metaData"] = payload["metaData"] || {};
-    payload["metaData"].isConfigured = true;
-  
+  payload = JSON.parse(sessionStorage.getItem("payload"));
 
-    payload["arguments"] = payload["arguments"] || {}
-    payload["arguments"]["execute"] = payload["arguments"]["execute"] || {}
-  
-    payload["arguments"].execute.inArguments = [];
-  
-    payload["arguments"].execute.inArguments = [
-      {
-        contactKey: "{{Contact.Key}}"
-      }
-    ];
-  
-    payload["arguments"].execute.inArguments.unshift(
-      localStorage.getItem("formValues")
-    );
-    localStorage.removeItem("formValues");
-    connection.trigger("updateActivity", payload);
-  
- 
+  payload["metaData"] = payload["metaData"] || {};
+  payload["metaData"].isConfigured = true;
+
+  payload["arguments"] = payload["arguments"] || {};
+  payload["arguments"]["execute"] = payload["arguments"]["execute"] || {};
+
+  payload["arguments"].execute.inArguments = [];
+
+  payload["arguments"].execute.inArguments = [
+    {
+      contactKey: "{{Contact.Key}}",
+    },
+  ];
+
+  payload["arguments"].execute.inArguments.unshift(
+    localStorage.getItem("formValues")
+  );
+  localStorage.removeItem("formValues");
+  connection.trigger("updateActivity", payload);
+
   // }
 }
 
-function requestedInteractionHandler (settings) {
-
-        console.log("SETTINGS",settings.triggers[0].metaData.eventDefinitionKey)
-
+function requestedInteractionHandler(settings) {
+  console.log("SETTINGS", settings.triggers[0].metaData.eventDefinitionKey);
 }
 $(document).ready(function () {
   if (
@@ -212,56 +201,87 @@ $(document).ready(function () {
   }
 
   $(".message-form").submit(function () {
-    var formData = {};
-    $.each($(this).serializeArray(), function (i, field) {
-      formData[field.name] = field.value;
-    });
-
-    var matches = JSON.parse(formData.template).content.match(/{{[^{}]*}}/g);
-    let templateDiv = document.getElementById("templateDiv");
-    templateDiv.innerHTML += JSON.parse(formData.template).content;
-    jQuery(".modalForm").append(
-      `<input class="default-input" name="wabaId" type="hidden" value="${
-        JSON.parse(formData.template).wabaId
-      }">`
-    );
-    jQuery(".modalForm").append(
-      `<input class="default-input" name="namespace" type="hidden" value="${
-        JSON.parse(formData.template).name
-      }">`
-    );
-    jQuery(".modalForm").append(
-      `<input class="default-input" name="content" type="hidden" value="${
-        JSON.parse(formData.template).content
-      }">`
-    );
-    if (matches && matches.length) {
-      for (let i = 0; i < matches.length; i++) {
-        let input = jQuery(
-          `<label class="dynamic-input">${matches[i]} :</label><input class="dynamic-input" required name="${matches[i]}">`
-        );
-        jQuery(".modalForm").append(input);
+    let fromFieldVal = $("#from").val();
+    let toFieldVal = $("#to").val();
+    let templateFieldVal = $("input[name=template]").is(":checked");
+    if (fromFieldVal === "") {
+      $("#fromvalidationerror").text("Please enter the From field");
+      return false;
+    } else if (
+      fromFieldVal != "" &&
+      !Number.isInteger(Math.floor(fromFieldVal))
+    ) {
+      $("#fromvalidationerror").text(
+        "Please enter a valid From number"
+      );
+      return false;
+    } else if (
+      fromFieldVal != "" &&
+      Number.isInteger(Math.floor(fromFieldVal)) &&
+      toFieldVal === ""
+    ) {
+      $("#fromvalidationerror").text("Please enter the To field");
+      return false;
+    } else if (
+      fromFieldVal != "" &&
+      Number.isInteger(Math.floor(fromFieldVal)) &&
+      toFieldVal != "" &&
+      templateFieldVal === false
+    ) {
+      $("#fromvalidationerror").text("Please select a message template");
+      return false;
+    } else {
+      $("#fromvalidationerror").text("");
+      var formData = {};
+      $.each($(this).serializeArray(), function (i, field) {
+        formData[field.name] = field.value;
+      });
+      var matches = JSON.parse(formData.template).content.match(/{{[^{}]*}}/g);
+      let templateDiv = document.getElementById("templateDiv");
+      templateDiv.innerHTML += JSON.parse(formData.template).content;
+      jQuery(".modalForm").append(
+        `<input class="default-input" name="wabaId" type="hidden" value="${
+          JSON.parse(formData.template).wabaId
+        }">`
+      );
+      jQuery(".modalForm").append(
+        `<input class="default-input" name="namespace" type="hidden" value="${
+          JSON.parse(formData.template).name
+        }">`
+      );
+      jQuery(".modalForm").append(
+        `<input class="default-input" name="content" type="hidden" value="${
+          JSON.parse(formData.template).content
+        }">`
+      );
+      if (matches && matches.length) {
+        for (let i = 0; i < matches.length; i++) {
+          let input = jQuery(
+            `<label class="dynamic-input">${matches[i]} :</label><input class="dynamic-input" required name="${matches[i]}">`
+          );
+          jQuery(".modalForm").append(input);
+        }
       }
+
+      jQuery(".modalForm").append(
+        `<input class="dynamic-mid" name="mid" type="hidden" value=${
+          JSON.parse(localStorage.getItem("tokens")).MID
+        }>`
+      );
+      jQuery(".modalForm").append(
+        `<input class="dynamic-mid" name="from" type="hidden" value=${formData.from}>`
+      );
+      jQuery(".modalForm").append(
+        `<input class="dynamic-mid" name="to" type="hidden" value=${formData.to}>`
+      );
+      jQuery(".modalForm").append(
+        '<input class="dynamic-next" type="submit" value="Save">'
+      );
+
+      $(".modal-wrapper").toggleClass("open");
+      $(".page-wrapper").toggleClass("blur");
+      return false;
     }
-
-    jQuery(".modalForm").append(
-      `<input class="dynamic-mid" name="mid" type="hidden" value=${
-        JSON.parse(localStorage.getItem("tokens")).MID
-      }>`
-    );
-    jQuery(".modalForm").append(
-      `<input class="dynamic-mid" name="from" type="hidden" value=${formData.from}>`
-    );
-    jQuery(".modalForm").append(
-      `<input class="dynamic-mid" name="to" type="hidden" value=${formData.to}>`
-    );
-    jQuery(".modalForm").append(
-      '<input class="dynamic-next" type="submit" value="Save">'
-    );
-
-    $(".modal-wrapper").toggleClass("open");
-    $(".page-wrapper").toggleClass("blur");
-    return false;
   });
 
   $(".modalForm").submit(function (event) {
@@ -353,4 +373,43 @@ $(document).ready(function () {
         "slow"
       );
     });
+
+  $("#reset").click(function () {
+    localStorage.clear();
+    document.location.href = "/";
+  });
+
+  $(".js-settings-form").submit((event) => {
+    
+    $("#connect-load").css("display", "block");
+    const formValues1 = {
+      username: event.target.elements.username.value,
+      password: event.target.elements.password.value,
+      MID: JSON.parse(localStorage.getItem("tokens")).MID,
+    };
+    fetch("/login", {
+      method: "POST",
+      body: JSON.stringify(formValues1),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
+      .then((res) => res.json())
+      .then((response) => {
+        if (response.redirect === true) {
+          localStorage.setItem("username", response.username);
+
+          window.location.href = `/dashboard?u=${localStorage.getItem(
+            "username"
+          )}&&mid=${JSON.parse(localStorage.getItem("tokens")).MID}`;
+          // $("#connect-load").css("display", "none")
+        } else if (response.redirect === false) {
+          $("#connect-load").css("display", "none");
+          $(".error").text(response.message);
+        }
+      });
+      
+    return false;
+    // }
+  });
 });
