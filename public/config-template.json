@@ -6,6 +6,7 @@
   "type": "REST",
   "lang": {
     "en-US": {
+      "name": "ADAMC(ADA Marketing Cloud)",
       "description": "Custom Activity For ADA For Sending Whatsapp Messages"
     }
   },
