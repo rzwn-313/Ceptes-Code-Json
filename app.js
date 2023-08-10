@@ -147,7 +147,7 @@ app.get('/dashboard', async (req, res) => {
       res.render('dashboard', {
         title: 'Template',
         error: null,
-        data: resp.data.templateData,
+        data: resp.data.data && resp.data.data.length > 0 ? resp.data.data : [],
       });
     }).catch((err) => {
       console.log("err")
