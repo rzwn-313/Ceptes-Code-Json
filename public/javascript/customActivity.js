@@ -204,13 +204,16 @@ $(document).ready(function () {
     let fromFieldVal = $("#from").val();
     let toFieldVal = $("#to").val();
     let templateFieldVal = $("input[name=template]").is(":checked");
+    var elmntToView = document.getElementById("fromvalidationerror");
     if (fromFieldVal === "") {
+      elmntToView.scrollIntoView({behavior: "smooth"});
       $("#fromvalidationerror").text("Please enter the From field");
       return false;
     } else if (
       fromFieldVal != "" &&
       !Number.isInteger(Math.floor(fromFieldVal))
     ) {
+      elmntToView.scrollIntoView({behavior: "smooth"});
       $("#fromvalidationerror").text(
         "Please enter a valid From number"
       );
@@ -220,6 +223,7 @@ $(document).ready(function () {
       Number.isInteger(Math.floor(fromFieldVal)) &&
       toFieldVal === ""
     ) {
+      elmntToView.scrollIntoView({behavior: "smooth"});
       $("#fromvalidationerror").text("Please enter the To field");
       return false;
     } else if (
@@ -228,6 +232,7 @@ $(document).ready(function () {
       toFieldVal != "" &&
       templateFieldVal === false
     ) {
+      elmntToView.scrollIntoView({behavior: "smooth"});
       $("#fromvalidationerror").text("Please select a message template");
       return false;
     } else {

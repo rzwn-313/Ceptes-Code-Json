@@ -17,8 +17,8 @@ $(document).ready(function() {
     }
     
     var prev = $("<li/>").addClass("prev").html("Prev").click(function(){
-       startPage-=5;
-       incremSlide-=5;
+       startPage-=pageSize;
+       incremSlide-=pageSize;
        numberPage--;
        slide();
     });
@@ -26,13 +26,13 @@ $(document).ready(function() {
     prev.hide();
     
     var next = $("<li/>").addClass("next").html("Next").click(function(){
-       startPage+=5;
-       incremSlide+=5;
+       startPage+=pageSize;
+       incremSlide+=pageSize;
        numberPage++;
        slide();
     });
 
-    if(pageCount <= 5){
+    if(pageCount <= pageSize){
         prev.hide();
         next.hide();
     }

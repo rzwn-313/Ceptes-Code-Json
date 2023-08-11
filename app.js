@@ -103,7 +103,7 @@ app.post('/login', async (req, res) => {
       });
   } else if (usernameVerify && !usernamePswdVerify) {
     // MID and username available in db and password wrong
-    res.send({ status: false, redirect: false, message: 'Incorrect Username/Password' });
+    res.send({ status: false, redirect: false, message: 'Incorrect Password' });
   } else {
     // MID available in db but username and password not registered
     await axios.post(process.env.TOKENGENERATEAPI, data1, { headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } })
